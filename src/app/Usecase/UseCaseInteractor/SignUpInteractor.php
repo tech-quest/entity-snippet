@@ -4,6 +4,7 @@ namespace App\Usecase\UseCaseInteractor;
 use App\Usecase\UseCaseInput\SignUpInput;
 use App\Usecase\UseCaseOutput\SignUpOutput;
 use App\Infrastructure\Dao\UserDao;
+use App\Domain\ValueObject\User\NewUser;
 
 final class SignUpInteractor
 {
@@ -84,6 +85,12 @@ final class SignUpInteractor
      */
     private function signup(): void
     {
-        $this->userDao->create($this->useCaseInput->name()->value(), $this->useCaseInput->email()->value(), $this->useCaseInput->password()->value());
+        $this->userDao->create(
+            new NewUser(
+                $this->useCaseInput->name(),
+                $this->useCaseInput->email(),
+                $this->useCaseInput->password()
+            )
+        );
     }
 }
